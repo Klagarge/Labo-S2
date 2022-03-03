@@ -12,7 +12,7 @@ import java.util.Random;
  */
 public class NumberAnalyzer {
 	public static void main(String[] args) {
-		int[] array = createRandomArray(100, 100);
+		int[] array = createRandomArray(100, 51);
 		displayArray(array);
 		int position = firstRepeatedNumber(array);
 		System.out.println("The first repeated element is at location " + position);
@@ -27,7 +27,7 @@ public class NumberAnalyzer {
 	 */
 	public static int firstRepeatedNumber(int[] inputArray) {
 		for (int i = 0; i < inputArray.length; i++) {
-			if (inputArray[i] == inputArray[i + 1])
+			if (inputArray[i] == inputArray[i + 1]) // can't work, for should finish to lenght-1
 				return i;
 		}
 		return -1;
