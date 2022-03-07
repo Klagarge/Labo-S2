@@ -1,7 +1,6 @@
 package lab11_debugging;
 
 import java.util.LinkedList;
-import java.util.ListIterator;
 
 /**
  * Class to test efficiency of Linked Lists
