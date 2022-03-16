@@ -1,5 +1,8 @@
 package lab12_sort;
 
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+
 import tools.Chrono;
 
 public class SortApplication {
@@ -8,50 +11,72 @@ public class SortApplication {
         long[][][] bubble = new long[3][451][10];
         long[][][] yShort = new long[3][451][10];
         long[][][] fusion = new long[3][451][10];
+        //final String chemin = "./sort/"; // linux
+        final String chemin = "C://tmp//sort//"; // Windows
 
-        for (int iValue = 450; iValue >= 0; iValue--) {
+        PrintWriter selectionWriter = null;
+        PrintWriter bubbleWriter = null;
+        PrintWriter yShortWriter = null;
+        PrintWriter fusionWriter = null;
+
+        try {
+            FileOutputStream selectionFile = new FileOutputStream(chemin + "selection.txt", true);
+            FileOutputStream bubbleFile = new FileOutputStream(chemin + "bubble.txt", true);
+            FileOutputStream yShortFile = new FileOutputStream(chemin + "yShort.txt", true);
+            FileOutputStream fusionFile = new FileOutputStream(chemin + "fusion.txt", true);
+            selectionWriter = new PrintWriter(selectionFile);
+            bubbleWriter = new PrintWriter(bubbleFile);
+            yShortWriter = new PrintWriter(yShortFile);
+            fusionWriter = new PrintWriter(fusionFile);
+        } catch (Exception e) {
+            System.out.println("File can't be create");
+            e.printStackTrace();
+        }
+
+        for (int iValue = 0; iValue <= 450; iValue++) {
             int value = iValue*200 + 10000;
             //int value = iValue*10 + 100;
             Chrono valueChrono = new Chrono();
-            long sortTime = 0;
 
             for (int iAttempt = 0; iAttempt < 10; iAttempt++) {
                 for (int iTable = 0; iTable < 3; iTable++){
-                    int[] arrayIN;
+                    int[] array;
                     switch (iTable) {
                         case 0:
-                            arrayIN = ArrayFactory.createRandomArray(value, value);
+                            array = ArrayFactory.createRandomArray(value, value);
                             break;
                         case 1:
-                            arrayIN = ArrayFactory.createInvertedSortedArray(value);
+                            array = ArrayFactory.createInvertedSortedArray(value);
                             break;
                         case 2:
-                            arrayIN = ArrayFactory.createShuffleArray(value);
+                            array = ArrayFactory.createShuffleArray(value);
                             break;
                     
                         default:
-                            arrayIN = null;
+                            array = null;
                             break;
                     }
-                    Chrono sort = new Chrono();
+
+                    int[] arraySelection = array.clone();
+                    int[] arrayBubble = array.clone();
+                    int[] arrayYSort = array.clone();
+                    int[] arrayFusion = array.clone();
 
                     Chrono selectionChrono = new Chrono();
-                    SelectionSort.sort(arrayIN);
+                    SelectionSort.sort(arraySelection);
                     selection[iTable][iValue][iAttempt] = selectionChrono.stop();
 
                     Chrono bubbleChrono = new Chrono();
-                    BubbleSort.sort(arrayIN);
+                    BubbleSort.sort(arrayBubble);
                     bubble[iTable][iValue][iAttempt] = bubbleChrono.stop();
 
                     Chrono yShortChrono = new Chrono();
-                    YSort.sort(arrayIN);
+                    YSort.sort(arrayYSort);
                     yShort[iTable][iValue][iAttempt] = yShortChrono.stop();
 
                     Chrono fusionChrono = new Chrono();
-                    FusionSort.sort(arrayIN);
+                    FusionSort.sort(arrayFusion);
                     fusion[iTable][iValue][iAttempt] = fusionChrono.stop();
-
-                    sortTime = sort.stop();
                 }
             }
 
@@ -76,11 +101,25 @@ public class SortApplication {
                 print(value, iTable, "Bubble   ", bubbleAverage[iTable][iValue]);
                 print(value, iTable, "YShort   ", yShortAverage[iTable][iValue]);
                 print(value, iTable, "Fusion   ", fusionAverage[iTable][iValue]);
+            
                 System.out.println("");
             }
-            System.out.println("Total time for sort " + value + ": " + sortTime/1000000.0 + " s");
+            write(selectionWriter, selectionAverage[0][iValue], selectionAverage[1][iValue], selectionAverage[2][iValue]);
+            write(bubbleWriter, bubbleAverage[0][iValue], bubbleAverage[1][iValue], bubbleAverage[2][iValue]);
+            write(yShortWriter, yShortAverage[0][iValue], yShortAverage[1][iValue], yShortAverage[2][iValue]);
+            write(fusionWriter, fusionAverage[0][iValue], fusionAverage[1][iValue], fusionAverage[2][iValue]);
             System.out.println("Total time for " + value + ": " + valueChrono.stop()/1000000.0 + " s");
             System.out.println("---------- ---------- ----------\n");
+        }
+
+        try {
+            selectionWriter.close();
+            bubbleWriter.close();
+            yShortWriter.close();
+            fusionWriter.close();
+        } catch (Exception e) {
+            System.out.println("File can't be close");
+            e.printStackTrace();
         }
     }
 
@@ -91,6 +130,23 @@ public class SortApplication {
         System.out.print("\n");
     }
 
+    static void write(PrintWriter writer, long averageT1, long averageT2, long averageT3){
+        String s = "";
+        s += averageT1;
+        s += ", ";
+        s += averageT2;
+        s += ", ";
+        s += averageT3;
+        try {
+            writer.println(s);
+        } catch (Exception e) {
+            System.out.println("File can't be written");
+            e.printStackTrace();
+        }
+        
+    }
+
+    /*
     static  void  displayArray(int[]  array){
         int size = array.length;
         String s = "Size ";
@@ -104,4 +160,5 @@ public class SortApplication {
         s += "}";
         System.out.println(s);
     }
+    */
 }
