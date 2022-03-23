@@ -27,7 +27,7 @@ public class GarageManager {
 		Object[] keys = services.keySet().toArray();
 		
 		String result = "";
-		result += "*************************\n";
+		result += "*******************************\n";
 		result += "* Super Auto 20000 invoice ****\n";
 		result += "*******************************\n\n";
 		
@@ -70,6 +70,16 @@ public class GarageManager {
 		System.out.println(bill2);
 				
 		// Complete with your code here !
+
+		try {
+			FileOutputStream bill = new FileOutputStream("C://tmp//bill.txt");
+			PrintWriter billWriter = new PrintWriter(bill);
+			billWriter.print(bill1 + "\n\n\n\n\n\n\n" + bill2);
+			billWriter.close();
+		} catch (Exception e) {
+			System.out.println("File can't be written");
+            e.printStackTrace();
+		}
 	}
 
 }

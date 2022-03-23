@@ -29,6 +29,30 @@ public class ReadFileApplication {
 			BufferedReader csvReader = new BufferedReader(new FileReader(in));
 			
 			// TODO: complete here
+			String line;
+			do {
+				line = csvReader.readLine();
+				
+				if(line == null) break;
+
+				String[] str = new String[7];
+				str = line.split(";");
+				
+				Point p1 = new Point();
+				p1.x = Integer.parseInt(str[0]);
+				p1.y = Integer.parseInt(str[1]);
+				
+				Point p2 = new Point();
+				p2.x = Integer.parseInt(str[2]);
+				p2.y = Integer.parseInt(str[3]);
+
+				Color color = new Color(
+					Integer.parseInt(str[4]),
+					Integer.parseInt(str[5]),
+					Integer.parseInt(str[6])
+					);
+				lines.add(new Line(p1, p2, color));
+			} while (!line.isEmpty());
 			
 			System.out.println(lines.size() + " shapes found in csv file.");
 			csvReader.close();
@@ -50,7 +74,7 @@ public class ReadFileApplication {
 	 * Entry point of the program
 	 */
 	public static void main(String[] args) {					
-		Vector<Line> theLines = ReadFileApplication.parseFile("drawingTest.csv");		
+		Vector<Line> theLines = ReadFileApplication.parseFile("src/lab13_streams/data/drawingTest.csv");		
 
 		// Display what we read
 		ReadFileApplication.displayLines(theLines);
