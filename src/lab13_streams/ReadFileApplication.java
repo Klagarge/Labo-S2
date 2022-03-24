@@ -52,7 +52,7 @@ public class ReadFileApplication {
 					Integer.parseInt(str[6])
 					);
 				lines.add(new Line(p1, p2, color));
-			} while (!line.isEmpty());
+			} while (true);
 			
 			System.out.println(lines.size() + " shapes found in csv file.");
 			csvReader.close();
