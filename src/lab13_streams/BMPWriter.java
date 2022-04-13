@@ -161,7 +161,5 @@ public class BMPWriter {
 	 * @param input
 	 * @return
 	 */
-	static private short convertToLED(short input) {
-		return (short) (((input & 0xff) << 8) | ((input & 0xff00) >> 8));
-	}
+	//static private short convertToLED(short input) {return (short) (((input & 0xff) << 8) | ((input & 0xff00) >> 8));}
 }
